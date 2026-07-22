@@ -1,0 +1,115 @@
+{
+  "name": "ai-interview-coach",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "715c1b12-2f88-4a0b-aadc-791ce5d614bf",
+      "name": "When chat message received",
+      "webhookId": "f8d44bdf-a558-47f9-8951-d6bb6f90958a"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are an AI Interview Coach.\n\nYour role is to conduct professional mock interviews for students and job seekers.\n\nRules:\n1. First ask the user which interview they want to practice:\n   - Python\n   - C\n   - C++\n   - Java\n   - Embedded Systems\n   - Electronics\n   - AI/ML\n   - HR Interview\n\n2. After the user chooses a topic, ask one interview question at a time.\n\n3. Wait for the user's answer before asking the next question.\n\n4. Evaluate each answer and provide:\n   • Score out of 10\n   • Strengths\n   • Areas for improvement\n   • Correct or ideal answer (if needed)\n\n5. Encourage the user and provide constructive feedback.\n\n6. Continue the interview until the user types:\n   \"End Interview\"\n\n7. At the end of the interview, provide:\n   • Overall Score\n   • Strongest Skills\n   • Weakest Areas\n   • Suggested Topics to Improve\n   • Final Feedback\n\nKeep the interview professional, interactive, and supportive.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8bc7e9ee-b5a5-459f-94f6-82100b29d13b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.1-8b-instant",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "31908753-01f5-4e56-bd0e-4892835d19a9",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "2krZnzv66m09EeDV",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        224,
+        208
+      ],
+      "id": "c2647268-cfa0-44b3-9fc4-7ea500dbd102",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3151f761-c204-49e0-951b-6161c6da7b8c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "491d775958b4b34e20beb1fe9f597f557c3a660da325f16000eeacda86fc5700"
+  },
+  "nodeGroups": [],
+  "id": "ZfHstRt9OIfSAnhH",
+  "tags": []
+}
